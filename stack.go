@@ -2,24 +2,24 @@ package main
 
 import "fmt"
 
-type StackInt struct {
+type Stack struct {
 	s []string
 }
 
 // isEmpty() function
-func (s *StackInt) IsEmpty() bool {
+func (s *Stack) IsEmpty() bool {
 	length := len(s.s)
 	return length == 0
 }
 
 // length() function
-func (s *StackInt) Length() int {
+func (s *Stack) Length() int {
 	length := len(s.s)
 	return length
 }
 
 // Print() function
-func (s *StackInt) Print() {
+func (s *Stack) Print() {
 	length := len(s.s)
 	for i := 0; i < length; i++ {
 		fmt.Print(s.s[i], " ")
@@ -28,12 +28,12 @@ func (s *StackInt) Print() {
 }
 
 // Push() function
-func (s *StackInt) Push(value string) {
+func (s *Stack) Push(value string) {
 	s.s = append(s.s, value)
 }
 
 // Pop() function
-func (s *StackInt) Pop() string {
+func (s *Stack) Pop() string {
 	length := len(s.s)
 	res := s.s[length-1]
 	s.s = s.s[:length-1]
@@ -41,7 +41,7 @@ func (s *StackInt) Pop() string {
 }
 
 // Top() function
-func (s *StackInt) Top() string {
+func (s *Stack) Top() string {
 	length := len(s.s)
 	res := s.s[length-1]
 	return res

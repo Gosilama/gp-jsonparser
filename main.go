@@ -25,19 +25,42 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Print(string(file[:]))
+	str := string(file[:])
+
+	fmt.Println(checkParenthesis(str))
 }
 
-// func checkParenthesis(s string) bool {
-// 	p := map[string]string {
-// 		"{": "}",
-// 	}
+func checkParenthesis(str string) bool {
+	// can be collapsed into a nested map
+	op := map[string]bool{
+		"{": true,
+		"[": true,
+		"(": true,
+	}
 
-// 	var stack StackInt
+	cp := map[string]string{
+		"}": "{",
+		"]": "[",
+		")": "(",
+	}
 
-// 	if p[s] != nil {
-// 		stack.Push(s)
-// 	} else {
-// 		// check if it's a closed parenthesis and then pop
-// 	}
-// }
+	var stack Stack
+
+	for _, c := range str {
+		s := string(c)
+		if op[s] {
+			stack.Push(s)
+		} else if stack.IsEmpty() {
+			return false
+		} else {
+			// check if it's a closed parenthesis and then pop
+			val := stack.Pop()
+
+			if cp[s] != val {
+				return false
+			}
+		}
+	}
+
+	return true
+}
