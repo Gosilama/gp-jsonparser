@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -25,9 +26,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	str := string(file[:])
+	str := strings.TrimSpace(string(file[:]))
+	bStr := getParenthesis(str)
 
-	fmt.Println(checkParenthesis(str))
+	fmt.Println(bStr)
+	valid := checkParenthesis(bStr)
+
+	fmt.Println(valid)
+}
+
+func getParenthesis(str string) string {
+	// str = strings.TrimSpace(str)
+	strLen := len(str)
+
+	return string(str[0]) + "" + string(str[strLen-1])
 }
 
 func checkParenthesis(str string) bool {
