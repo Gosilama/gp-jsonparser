@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"strings"
 )
 
@@ -27,19 +28,29 @@ func main() {
 	}
 
 	str := strings.TrimSpace(string(file[:]))
-	bStr := getParenthesis(str)
+	bStr, kvStr := getParenthesis(str)
 
-	fmt.Println(bStr)
 	valid := checkParenthesis(bStr)
 
-	fmt.Println(valid)
+	if !valid {
+		fmt.Printf("%v is an invalid json file\n", args[1])
+		os.Exit(1)
+	}
+
+	// kvStrArr := strings.Split(kvStr, ":")
+
+	// for _, val := range kvStrArr {
+	// 	if reflect.TypeOf(val) != "string" {
+
+	// 	}
+	// }
 }
 
-func getParenthesis(str string) string {
+func getParenthesis(str string) (string, string) {
 	// str = strings.TrimSpace(str)
 	strLen := len(str)
 
-	return string(str[0]) + "" + string(str[strLen-1])
+	return string(str[0]) + "" + string(str[strLen-1]), str[1 : strLen-1]
 }
 
 func checkParenthesis(str string) bool {
