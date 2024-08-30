@@ -4,9 +4,19 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"reflect"
-	"strings"
+	// "strings"
 )
+
+const JsonQuote = "\""
+const JsonComma = ","
+const JsonColon = ":"
+const JsonLeftBracket = "["
+const JsonRightBracket = "]"
+const JsonLeftBrace = "{"
+const JsonRightBrace = "}"
+
+var JsonWhitespace = []string{" ", "\t", "\b", "\n", "\r"}
+var JsonSyntax = []string{JsonComma, JsonColon, JsonLeftBracket, JsonRightBracket, JsonLeftBrace, JsonRightBrace}
 
 func main() {
 	if len(os.Args) == 1 {
@@ -27,63 +37,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	str := strings.TrimSpace(string(file[:]))
-	bStr, kvStr := getParenthesis(str)
+	// str := strings.TrimSpace(string(file[:]))
 
-	valid := checkParenthesis(bStr)
-
-	if !valid {
-		fmt.Printf("%v is an invalid json file\n", args[1])
-		os.Exit(1)
-	}
-
-	// kvStrArr := strings.Split(kvStr, ":")
-
-	// for _, val := range kvStrArr {
-	// 	if reflect.TypeOf(val) != "string" {
-
-	// 	}
-	// }
 }
 
-func getParenthesis(str string) (string, string) {
-	// str = strings.TrimSpace(str)
-	strLen := len(str)
-
-	return string(str[0]) + "" + string(str[strLen-1]), str[1 : strLen-1]
+func fromString(str string) {
+	fmt.Println(str)
 }
 
-func checkParenthesis(str string) bool {
-	// can be collapsed into a nested map
-	op := map[string]bool{
-		"{": true,
-		"[": true,
-		"(": true,
-	}
-
-	cp := map[string]string{
-		"}": "{",
-		"]": "[",
-		")": "(",
-	}
-
-	var stack Stack
-
-	for _, c := range str {
-		s := string(c)
-		if op[s] {
-			stack.Push(s)
-		} else if stack.IsEmpty() {
-			return false
-		} else {
-			// check if it's a closed parenthesis and then pop
-			val := stack.Pop()
-
-			if cp[s] != val {
-				return false
-			}
-		}
-	}
-
-	return true
-}
+// Note: using methods described here : https://notes.eatonphil.com/writing-a-simple-json-parser.html
