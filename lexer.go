@@ -1,6 +1,14 @@
 package main
 
-import "slices"
+import (
+	"slices"
+	"strconv"
+	"strings"
+)
+
+// type Number interface {
+// 	int64 | float64
+// }
 
 func lexer(str string) {
 	var tokens []string
@@ -40,17 +48,68 @@ func lexString(str string) (a, b string) {
 		}
 	}
 
-	return "", str
+	panic("Expected end-of-string quote")
 }
 
-func lexNumber(str string) (a, b string) {
-	return "", str
+// I'll update this to use the interface constraint approach when I understand generics better
+func lexNumber(str string) (n any, b string) {
+	jsonNumber := ""
+
+	numberChars := []string{"-", "e", "."}
+
+	for val := range 10 {
+		numberChars = append(numberChars, string(val))
+	}
+
+	for _, val := range str {
+		if slices.Contains(numberChars, string(val)) {
+			jsonNumber += string(val)
+		} else {
+			break
+		}
+	}
+
+	leftover := str[len(jsonNumber):]
+
+	if len(jsonNumber) == 0 {
+		return nil, str
+	}
+
+	if strings.Contains(jsonNumber, ".") {
+		val, err := strconv.ParseFloat(jsonNumber, 64)
+
+		if err != nil {
+			panic("invalid float conversion")
+		}
+
+		return val, leftover
+	}
+
+	val, _ := strconv.ParseInt(jsonNumber, 10, 64)
+	return val, leftover
 }
 
-func lexBoolean(str string) (a, b string) {
-	return "", str
+// this should return a boolean and a string
+func lexBoolean(str string) (a any, b string) {
+	strLen := len(str)
+
+	if strLen >= trueLen && str[:trueLen] == "true" {
+		return true, str[trueLen:]
+	}
+
+	if strLen >= falseLen && str[:falseLen] == "false" {
+		return false, str[falseLen:]
+	}
+
+	return nil, str
 }
 
-func lexNull(str string) (a, b string) {
-	return "", str
+func lexNull(str string) (a any, b string) {
+	strLen := len(str)
+
+	if strLen >= nullLen && str[:nullLen] == "null" {
+		return true, str[nullLen:]
+	}
+
+	return nil, str
 }

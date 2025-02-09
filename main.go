@@ -18,6 +18,10 @@ const JsonRightBrace = "}"
 var JsonWhitespace = []string{" ", "\t", "\b", "\n", "\r"}
 var JsonSyntax = []string{JsonComma, JsonColon, JsonLeftBracket, JsonRightBracket, JsonLeftBrace, JsonRightBrace}
 
+const falseLen = len("false")
+const trueLen = len("true")
+const nullLen = len("null")
+
 func main() {
 	if len(os.Args) == 1 {
 		log.Fatal("arguments missing")
